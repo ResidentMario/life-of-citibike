@@ -6,34 +6,26 @@ const core = require('../core.js');
 // const moment = require('moment');
 
 export default function reducer(previousState, action) {
-    let previousTicks = previousState.ticks;
-    let nextTicks = null;
+    let previousTick = previousState.tick;
+    let nextTick = null;
 
     switch (action.type) {
         case 'STEP_FORWARD':
-            nextTicks = core.step_forward(previousTicks);
+            nextTick = core.step_forward(previousTick);
 
-            if (!(nextTicks > previousTicks)) { return previousState }
-
-            return {
-                'display': 'stations_on_date',
-                'stations': core.get_stations_on_date(action.date),
-                'trips': null,
-                'tripsets': null,
-                'ticks': nextTicks
-            };
+            if (!(nextTick > previousTick)) {
+                return previousState
+            } else {
+                return core.get_state_at_tick(nextTick);
+            }
         case 'STEP_BACKWARDS':
-            nextTicks = core.step_backwards(previousTicks);
+            nextTick = core.step_backwards(previousTick);
 
-            if (!(nextTicks < previousTicks)) { return previousState }
-
-            return {
-                'display': 'stations_on_date',
-                'stations': core.get_stations_on_date(action.date),
-                'trips': null,
-                'tripsets': null,
-                'ticks': nextTicks
-            };
+            if (!(nextTick < previousTick)) {
+                return previousState;
+            } else {
+                return core.get_state_at_tick(nextTick);
+            }
         default:
             return previousState;
     }

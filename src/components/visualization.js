@@ -11,10 +11,8 @@ export default class Visualization extends React.Component {
 
     handleScroll(e) {
         if (e.deltaY > 0) {
-            console.log("YO");
             this.props.stepForward();  // stepForward inherited from VisualizationContainer
         } else {
-            console.log("DAWG");
             this.props.stepBackwards();  // stepBackwards inherited from VisualizationContainer
         }
     }
@@ -27,7 +25,7 @@ export default class Visualization extends React.Component {
                 {[
                     <NYCMap key={1}/>,
                     // <div key={1}>"HELLO WORLD"</div>,
-                    <Scrollbar percent={this.props.ticks} key={3}/>
+                    <Scrollbar percent={this.props.tick} key={3}/>
                 ]}
             </div>
         );

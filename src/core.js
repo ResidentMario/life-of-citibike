@@ -7,7 +7,7 @@ const d3 = require('d3');
 const moment = require('moment');
 const _ = require('lodash');
 
-export const INITIAL_STATE = new Map();
+export const INITIAL_STATE = {'tick': 0};
 
 export function step_backwards(previous_ticks, min_ticks=0) {
     return previous_ticks === min_ticks ? previous_ticks : previous_ticks - 1;
@@ -734,12 +734,22 @@ const station_prospectus = d3.csvParse(`ID,Closed,Latitude,Longitude,Opened
 
 // TODO: Fix this per the test. Looks like I'm misunderstanding pickBy?
 export function get_stations_on_date(date) {
-    let stuff = null;
-    stuff = _.pickBy(station_prospectus, function(station) {
+    return _.pickBy(station_prospectus, function(station) {
         if (station.id === '160') {
             console.log(((station.opened <= date) && (!station.closed || station.closed > date)));
         }
         return ((station.opened <= date) && (!station.closed || station.closed > date));
     });
-    return stuff;
+}
+
+export function get_state_at_tick(tick) {
+    if (tick === 0) {
+        return {tick, 'overlay': 'introduction'}
+    } else if (tick === 1) {
+        return {tick}
+    } else if (tick === 2) {
+        return {tick, 'stations': [get_stations_on_date('20130601', 'YYYYMMDD')]}
+    } else {
+        return {tick};
+    }
 }

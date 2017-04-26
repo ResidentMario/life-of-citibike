@@ -5,8 +5,9 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import App from './App';
 import reducer from './reducers';
+import { INITIAL_STATE } from './core';
 
-const store = createStore(reducer, {'ticks': 0});
+const store = createStore(reducer, INITIAL_STATE);
 
 ReactDOM.render(
     <Provider store={store}>
